@@ -71,16 +71,16 @@ public class App {
 
         Scanner scn = new Scanner(System.in);
         Cube myCube=new Cube();
-        myCube.l();
+        
+        myCube.d();
+      
+        
+        
      
         String[][][] temp =myCube.remapForDisplay(myCube.getCube().clone());
+        myCube.printCube();
+        Cube.show(temp);
         
-
-        System.out.println("Would you like to see the solved cube (1) or checkered cube (2)? (1,2) ");
-       
-
-            myCube.printCube();
-            Cube.show(temp);
         
             //Cube.show(checkCube);
 

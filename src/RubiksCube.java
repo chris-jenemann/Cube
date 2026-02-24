@@ -57,39 +57,34 @@ public class RubiksCube extends JPanel implements ActionListener {
         timer.start();
     }
 
-    public void setCubeColors(String[][][] faceData) {
-    for (Cubie cubie : cubies) {
-        int gx = (int) Math.round(cubie.ox / (cubie.size + cubie.gap));
-        int gy = (int) Math.round(cubie.oy / (cubie.size + cubie.gap));
-        int gz = (int) Math.round(cubie.oz / (cubie.size + cubie.gap));
+   public void setCubeColors(String[][][] faceData) {
+        for (Cubie cubie : cubies) {
+            // Convert screen coordinates back to grid indices (-1, 0, 1)
+            int gx = (int) Math.round(cubie.ox / (cubie.size + cubie.gap));
+            int gy = (int) Math.round(cubie.oy / (cubie.size + cubie.gap));
+            int gz = (int) Math.round(cubie.oz / (cubie.size + cubie.gap));
 
-        // Front Face (Z = 1) - varies by X (col) and Y (row)
-        if (gz == 1)
-            cubie.faceColors[0] = getColor(faceData[0][gy + 1][gx + 1]);
-
-        // Back Face (Z = -1) - varies by X (col) and Y (row)
-        if (gz == -1)
-            cubie.faceColors[1] = getColor(faceData[1][gy + 1][gx + 1]);
-
-        // Right Face (X = 1) - varies by Z (col) and Y (row)
-        if (gx == 1)
-            cubie.faceColors[2] = getColor(faceData[2][gy + 1][gz + 1]);
-
-        // Left Face (X = -1) - varies by Z (col) and Y (row)
-        if (gx == -1)
-            cubie.faceColors[3] = getColor(faceData[3][gy + 1][gz + 1]);
-
-     // Top Face (Y = -1) - flip gz
-        if (gy == -1)
-            cubie.faceColors[4] = getColor(faceData[4][-gz + 1][gx + 1]);
+            // Indices for the 3x3 array (0, 1, 2)
+            int ix = gx + 1;
+            int iy = gy + 1;
+            int iz = gz + 1;
 
 
-        // Bottom Face (Y = 1) - varies by X (col) and Z (row)
-       if (gy == 1)
-            cubie.faceColors[5] = getColor(faceData[5][-gz + 1][gx + 1]);
+            // Face 0: Front (Z = 1)
+            if (gz == 1) cubie.faceColors[0] = getColor(faceData[0][iy][ix]);
+            // Face 1: Back (Z = -1)
+            if (gz == -1) cubie.faceColors[1] = getColor(faceData[1][iy][2 - ix]);
+            // Face 2: Right (X = 1)
+            if (gx == 1) cubie.faceColors[2] = getColor(faceData[2][iy][2 - iz]);
+            // Face 3: Left (X = -1)
+            if (gx == -1) cubie.faceColors[3] = getColor(faceData[3][iy][iz]);
+            // Face 4: Top (Y = -1)
+            if (gy == 1) cubie.faceColors[4] = getColor(faceData[4][iz][ix]);
+            // Face 5: Bottom (Y = 1)
+            if (gy == -1) cubie.faceColors[5] = getColor(faceData[5][2 - iz][ix]);
+        }
+        repaint();
     }
-    repaint();
-}
     
     private Color getColor(String code) {
         switch (code.toLowerCase()) {

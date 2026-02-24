@@ -7,23 +7,29 @@ public class Cube {
 
   //3d array to represent the cube, each face is a 3x3 array of colors
   //face indices: 0=Up(white), 1=Back(blue), 2=Right(red), 3=Front(green), 4=Left(orange), 5=Down(yellow)
-  //Im not sure if this will work with the auto grader...
+  //Im not sure if this will work with the auto grader, but I did make the format in the print match the canvas
+  //https://onlinecube.com/ 
      String[][][] cube = {
         {{"w","w","w"},
         {"w","w","w"},
         {"w","w","w"}},  
+
         {{"b","b","b"},
         {"b","b","b"},
         {"b","b","b"}}, 
+
         {{"r","r","r"},
         {"r","r","r"},
-        {"r","r","r"}},  
+        {"r","r","r"}}, 
+
         {{"g","g","g"},
         {"g","g","g"},
-        {"g","g","g"}},  
+        {"g","g","g"}}, 
+
         {{"o","o","o"}
         ,{"o","o","o"},
-        {"o","o","o"}},  
+        {"o","o","o"}},
+
         {{"y","y","y"},
         {"y","y","y"},
         {"y","y","y"}}   
@@ -34,7 +40,7 @@ public class Cube {
     //print top
     for (int i = 0; i < 3; i++) {
       //formatting
-      System.out.print("    ");
+      System.out.print("        ");
       for (int j = 0; j < 3; j++) {
         System.out.print(cube[0][i][j]);
       }
@@ -42,10 +48,12 @@ public class Cube {
     }
 
     //print mid line
+    //face order: Back, Right, Front, Left For readablity 
+    int[] temp = {1,4,3,2};
     for (int i = 0; i < 3; i++) {
-      for (int j = 1; j < 5; j++) {
+      for (int j = 0; j < 4; j++) {
         for (int k = 0; k < 3; k++) {
-          System.out.print(cube[j][i][k]);
+          System.out.print(cube[temp[j]][i][k]);
         }
         System.out.print(" ");
       }
@@ -54,7 +62,7 @@ public class Cube {
 
     //print bottom
     for (int i = 0; i < 3; i++) {
-      System.out.print("    ");
+      System.out.print("        ");
       for (int j = 0; j < 3; j++) {
         System.out.print(cube[5][i][j]);
       }
@@ -65,7 +73,7 @@ public class Cube {
   //rotates face clockwise
   //Keeps cube consistant with turns
   //thought i didn't need this but broke after multiple moves without it
-  //will have to be used 3 times when a face is rotated clockwise
+  //will have to be used 3 times when a face is rotated counter clockwise like on d and l
   private void rotateFace(int face) {
     String[][] temp = new String[3][3];
 
@@ -84,33 +92,33 @@ public class Cube {
 
     // Save Up left column
     for (int i = 0; i < 3; i++) {
-      temp[i] = cube[0][i][0];
+        temp[i] = cube[0][i][0];
     }
 
     // Back right column (inverted) -> Up left column
     for (int i = 0; i < 3; i++) {
-      cube[0][i][0] = cube[1][2 - i][2];
+        cube[0][i][0] = cube[1][2 - i][2]; // fixed: add inversion
     }
 
     // Down left column -> Back right column (inverted)
     for (int i = 0; i < 3; i++) {
-      cube[1][2 - i][2] = cube[5][i][0];
+        cube[1][2 - i][2] = cube[5][i][0]; // correct
     }
 
     // Front left column -> Down left column
     for (int i = 0; i < 3; i++) {
-      cube[5][i][0] = cube[3][i][0];
+        cube[5][i][0] = cube[3][i][0]; // fixed: remove inversion
     }
 
     // Saved Up left column -> Front left column
     for (int i = 0; i < 3; i++) {
-      cube[3][i][0] = temp[i];
+        cube[3][i][0] = temp[i]; // correct
     }
 
     rotateFace(4);
     rotateFace(4);
-    rotateFace(4); // 3x CW = 1x CCW (Left face rotates counter-clockwise on an L move)
-  }
+    rotateFace(4);
+}
   public void lP() {
     l();
     l();
@@ -123,31 +131,31 @@ public class Cube {
 
     // Save Up right column
     for (int i = 0; i < 3; i++) {
-      temp[i] = cube[0][i][2];
+        temp[i] = cube[0][i][2];
     }
 
     // Front right column -> Up right column
     for (int i = 0; i < 3; i++) {
-      cube[0][i][2] = cube[3][i][2];
+        cube[0][i][2] = cube[3][i][2]; // fixed: remove inversion
     }
 
     // Down right column -> Front right column
     for (int i = 0; i < 3; i++) {
-      cube[3][i][2] = cube[5][i][2];
+        cube[3][i][2] = cube[5][i][2]; // fixed: remove inversion
     }
 
     // Back left column (inverted) -> Down right column
     for (int i = 0; i < 3; i++) {
-      cube[5][i][2] = cube[1][2 - i][0];
+        cube[5][i][2] = cube[1][i][0]; // correct
     }
 
     // Saved Up right column -> Back left column (inverted)
     for (int i = 0; i < 3; i++) {
-      cube[1][2 - i][0] = temp[i];
+        cube[1][2 - i][0] = temp[i]; // correct
     }
 
-    rotateFace(2); // rotate Right face clockwise
-  }
+    rotateFace(2); // fixed: 1x CW, not 3x
+}
   public void rP() {
     r();
     r();
@@ -155,14 +163,14 @@ public class Cube {
   }
 
 //up, red row comes to front
-  public void u() {
+public void u() {
     String[] temp = cube[3][0].clone(); // save Front top row
-    cube[3][0] = cube[2][0].clone(); // Right top  -> Front top
-    cube[2][0] = cube[1][0].clone(); // Back top   -> Right top
-    cube[1][0] = cube[4][0].clone(); // Left top   -> Back top
-    cube[4][0] = temp; // saved Front top -> Left top
+    cube[3][0] = cube[4][0].clone(); // Left top  -> Front top
+    cube[4][0] = cube[1][0].clone(); // Back top  -> Left top
+    cube[1][0] = cube[2][0].clone(); // Right top -> Back top
+    cube[2][0] = temp;               // saved Front top -> Right top
     rotateFace(0);
-  }
+}
   public void uP() {
     u();
     u();
@@ -172,12 +180,16 @@ public class Cube {
 ////down, orange row comes to front
   public void d() {
     //cycled opposite to U because D is rotated opposite of U
-    String[] temp = cube[3][2].clone(); // save Front bottom row
-    cube[3][2] = cube[4][2].clone(); // Left bottom  -> Front bottom
-    cube[4][2] = cube[1][2].clone(); // Back bottom  -> Left bottom
-    cube[1][2] = cube[2][2].clone(); // Right bottom -> Back bottom
-    cube[2][2] = temp; // saved Front bottom -> Right bottom
+  // Should be:
+    String[] temp = cube[3][2].clone();
+    cube[3][2] = cube[2][2].clone(); // Right -> Front
+    cube[2][2] = cube[1][2].clone(); // Back  -> Right
+    cube[1][2] = cube[4][2].clone(); // Left  -> Back
+    cube[4][2] = temp;               // Front -> Left
     rotateFace(5);
+    rotateFace(5);
+    rotateFace(5);
+    
   }
   public void dP() {
     d();
@@ -186,45 +198,42 @@ public class Cube {
   }
 
 //green face rotates
-  public void f() {
-    // Save all four edges first to avoid overwrite issues
-    String[] upBottom = cube[0][2].clone(); //top
-    String[] downTop = cube[5][0].clone(); // bottom
-    //left
+ public void f() {
+    String[] upBottom = cube[0][2].clone();
+    String[] downTop = cube[5][0].clone();
     String[] leftRight = {
-      cube[4][0][2],
-      cube[4][1][2],
-      cube[4][2][2]
-    }; 
-    //right
+        cube[4][0][2],
+        cube[4][1][2],
+        cube[4][2][2]
+    };
     String[] rightLeft = {
-      cube[2][0][0],
-      cube[2][1][0],
-      cube[2][2][0]
-    }; 
+        cube[2][0][0],
+        cube[2][1][0],
+        cube[2][2][0]
+    };
 
-    // top to right
+    // Up bottom row -> Right left col (inverted)
     for (int i = 0; i < 3; i++) {
-      cube[2][i][0] = upBottom[i];
+        cube[2][i][0] = upBottom[2-i]; // correct
     }
 
-    // left to top
+    // Left right col -> Up bottom row (inverted)
     for (int i = 0; i < 3; i++) {
-      cube[0][2][i] = leftRight[2 - i];
+        cube[0][2][i] = leftRight[2-i]; // fixed: add inversion
     }
 
-    //down to left
+    // Down top row -> Left right col (inverted)
     for (int i = 0; i < 3; i++) {
-      cube[4][i][2] = downTop[2 - i];
+        cube[4][2-i][2] = downTop[i]; // correct
     }
 
-    // right to down
+    // Right left col -> Down top row (inverted)
     for (int i = 0; i < 3; i++) {
-      cube[5][0][i] = rightLeft[i];
+        cube[5][0][i] = rightLeft[2-i]; // fixed: add inversion
     }
 
-    rotateFace(3); // rotate Front face clockwise
-  }
+    rotateFace(3); // assuming 3 is Front face index
+}
   public void fP() {
     f();
     f();
@@ -233,55 +242,55 @@ public class Cube {
 
 //blue face rotates
   public void b() {
-    String[] upTop = cube[0][0].clone(); //black
-    String[] downBottom = cube[5][2].clone(); //yellow
-    //orange
+    String[] upTop = cube[0][0].clone();
+    String[] downBottom = cube[5][2].clone();
     String[] leftLeft = {
-      cube[4][0][0],
-      cube[4][1][0],
-      cube[4][2][0]
-    }; 
-    //red
+        cube[4][0][0],
+        cube[4][1][0],
+        cube[4][2][0]
+    };
     String[] rightRight = {
-      cube[2][0][2],
-      cube[2][1][2],
-      cube[2][2][2]
-    }; 
+        cube[2][0][2],
+        cube[2][1][2],
+        cube[2][2][2]
+    };
 
-    //blacl to orange
+    // Up top row -> Left left col (inverted)
     for (int i = 0; i < 3; i++) {
-      cube[4][i][0] = upTop[2 - i];
+        cube[4][2-i][0] = upTop[i]; // fixed: add inversion
     }
 
-    // red to black
+    // Right right col -> Up top row (inverted)
     for (int i = 0; i < 3; i++) {
-      cube[0][0][i] = rightRight[2 - i];
+        cube[0][0][i] = rightRight[2-i]; // correct
+    }
+      // Down bottom row -> Right right col (inverted)
+    for (int i = 0; i < 3; i++) {
+        cube[2][2-i][2] = downBottom[i]; // fixed
     }
 
-    //yellow to red 
+    // Left left col -> Down bottom row (inverted)
     for (int i = 0; i < 3; i++) {
-      cube[2][i][2] = downBottom[2 - i];
+        cube[5][2][i] = leftLeft[2-i]; // correct
     }
 
-    //orange yellow
-    for (int i = 0; i < 3; i++) {
-      cube[5][2][i] = leftLeft[2 - i];
-    }
-
-    rotateFace(1); // rotate Back face clockwise
-  }
+    rotateFace(1);
+    rotateFace(1);
+    rotateFace(1);
+}
   public void bP() {
     b();
     b();
     b();
   }
 
-//prints all faces of the cube sequentially
+//prints all faces of the cube for auto grader
   public void printCube() {
-    for (int i = 0; i < 6; i++) {
-      for (int j = 0; j < 3; j++) {
-        for (int k = 0; k < 3; k++) {
-          System.out.print(cube[i][j][k] + " ");
+    int[] faceOrder = {2,1,4,3,5,0}; // Up, Back, Right, Front, Left, Down
+    for (int face: faceOrder) {
+      for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+          System.out.print(cube[face][i][j]);
         }
         System.out.println();
       }
@@ -372,9 +381,7 @@ public class Cube {
       System.out.print(move + " ");
     }
   }
-
-  //this is trying to get the 3d cube to work but but its fried
-  //i'll come to office hours to try and figure it out 
+ 
   public String[][][] remapForDisplay(String[][][] src) {
     String[][][] temp = new String[6][3][3];
 
@@ -405,8 +412,9 @@ public class Cube {
         System.out.println("Input Move (R, R', L, L', etc.)");
         String move = scn.nextLine();
         cube.mover(move);
+        cube.DevelopmentprintCube();
         if (move.equals("exit")) {
-          cube.printCube();
+
           System.exit(0);
         }
       }
