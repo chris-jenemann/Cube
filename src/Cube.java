@@ -95,7 +95,6 @@ public class Cube {
         temp[i] = cube[0][i][0];
     }
 
-    // Back right column (inverted) -> Up left column
     for (int i = 0; i < 3; i++) {
         cube[0][i][0] = cube[1][2 - i][2]; // fixed: add inversion
     }
