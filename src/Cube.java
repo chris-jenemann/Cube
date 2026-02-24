@@ -90,28 +90,26 @@ public class Cube {
   public void l() {
     String[] temp = new String[3];
 
-    // Save Up left column
+    
     for (int i = 0; i < 3; i++) {
         temp[i] = cube[0][i][0];
     }
 
     for (int i = 0; i < 3; i++) {
-        cube[0][i][0] = cube[1][2 - i][2]; // fixed: add inversion
+        cube[0][i][0] = cube[1][2 - i][2]; 
     }
 
-    // Down left column -> Back right column (inverted)
     for (int i = 0; i < 3; i++) {
-        cube[1][2 - i][2] = cube[5][i][0]; // correct
+        cube[1][2 - i][2] = cube[5][i][0];
     }
 
-    // Front left column -> Down left column
     for (int i = 0; i < 3; i++) {
-        cube[5][i][0] = cube[3][i][0]; // fixed: remove inversion
+        cube[5][i][0] = cube[3][i][0];
     }
 
-    // Saved Up left column -> Front left column
+   
     for (int i = 0; i < 3; i++) {
-        cube[3][i][0] = temp[i]; // correct
+        cube[3][i][0] = temp[i]; 
     }
 
     rotateFace(4);
@@ -128,32 +126,30 @@ public class Cube {
   public void r() {
     String[] temp = new String[3];
 
-    // Save Up right column
     for (int i = 0; i < 3; i++) {
         temp[i] = cube[0][i][2];
     }
 
-    // Front right column -> Up right column
     for (int i = 0; i < 3; i++) {
-        cube[0][i][2] = cube[3][i][2]; // fixed: remove inversion
+        cube[0][i][2] = cube[3][i][2]; 
     }
 
-    // Down right column -> Front right column
+
     for (int i = 0; i < 3; i++) {
-        cube[3][i][2] = cube[5][i][2]; // fixed: remove inversion
+        cube[3][i][2] = cube[5][i][2]; 
     }
 
-    // Back left column (inverted) -> Down right column
+ 
     for (int i = 0; i < 3; i++) {
-        cube[5][i][2] = cube[1][i][0]; // correct
+        cube[5][i][2] = cube[1][i][0];
     }
 
-    // Saved Up right column -> Back left column (inverted)
+  
     for (int i = 0; i < 3; i++) {
-        cube[1][2 - i][0] = temp[i]; // correct
+        cube[1][2 - i][0] = temp[i]; 
     }
 
-    rotateFace(2); // fixed: 1x CW, not 3x
+    rotateFace(2); 
 }
   public void rP() {
     r();
@@ -163,11 +159,11 @@ public class Cube {
 
 //up, red row comes to front
 public void u() {
-    String[] temp = cube[3][0].clone(); // save Front top row
-    cube[3][0] = cube[4][0].clone(); // Left top  -> Front top
-    cube[4][0] = cube[1][0].clone(); // Back top  -> Left top
-    cube[1][0] = cube[2][0].clone(); // Right top -> Back top
-    cube[2][0] = temp;               // saved Front top -> Right top
+    String[] temp = cube[3][0].clone(); 
+    cube[3][0] = cube[4][0].clone(); 
+    cube[4][0] = cube[1][0].clone();
+    cube[1][0] = cube[2][0].clone(); 
+    cube[2][0] = temp;               
     rotateFace(0);
 }
   public void uP() {
@@ -178,13 +174,12 @@ public void u() {
 
 ////down, orange row comes to front
   public void d() {
-    //cycled opposite to U because D is rotated opposite of U
-  // Should be:
+
     String[] temp = cube[3][2].clone();
-    cube[3][2] = cube[2][2].clone(); // Right -> Front
-    cube[2][2] = cube[1][2].clone(); // Back  -> Right
-    cube[1][2] = cube[4][2].clone(); // Left  -> Back
-    cube[4][2] = temp;               // Front -> Left
+    cube[3][2] = cube[2][2].clone(); 
+    cube[2][2] = cube[1][2].clone(); 
+    cube[1][2] = cube[4][2].clone(); 
+    cube[4][2] = temp;               
     rotateFace(5);
     rotateFace(5);
     rotateFace(5);
@@ -211,27 +206,24 @@ public void u() {
         cube[2][2][0]
     };
 
-    // Up bottom row -> Right left col (inverted)
     for (int i = 0; i < 3; i++) {
-        cube[2][i][0] = upBottom[2-i]; // correct
+        cube[2][i][0] = upBottom[2-i]; 
     }
 
-    // Left right col -> Up bottom row (inverted)
     for (int i = 0; i < 3; i++) {
-        cube[0][2][i] = leftRight[2-i]; // fixed: add inversion
+        cube[0][2][i] = leftRight[2-i]; 
     }
 
-    // Down top row -> Left right col (inverted)
+ 
     for (int i = 0; i < 3; i++) {
-        cube[4][2-i][2] = downTop[i]; // correct
+        cube[4][2-i][2] = downTop[i]; 
     }
 
-    // Right left col -> Down top row (inverted)
     for (int i = 0; i < 3; i++) {
-        cube[5][0][i] = rightLeft[2-i]; // fixed: add inversion
+        cube[5][0][i] = rightLeft[2-i]; 
     }
 
-    rotateFace(3); // assuming 3 is Front face index
+    rotateFace(3); 
 }
   public void fP() {
     f();
@@ -254,23 +246,20 @@ public void u() {
         cube[2][2][2]
     };
 
-    // Up top row -> Left left col (inverted)
-    for (int i = 0; i < 3; i++) {
+   for (int i = 0; i < 3; i++) {
         cube[4][2-i][0] = upTop[i]; // fixed: add inversion
     }
 
-    // Right right col -> Up top row (inverted)
     for (int i = 0; i < 3; i++) {
-        cube[0][0][i] = rightRight[2-i]; // correct
-    }
-      // Down bottom row -> Right right col (inverted)
-    for (int i = 0; i < 3; i++) {
-        cube[2][2-i][2] = downBottom[i]; // fixed
+        cube[0][0][i] = rightRight[2-i]; 
     }
 
-    // Left left col -> Down bottom row (inverted)
     for (int i = 0; i < 3; i++) {
-        cube[5][2][i] = leftLeft[2-i]; // correct
+        cube[2][2-i][2] = downBottom[i]; 
+    }
+
+    for (int i = 0; i < 3; i++) {
+        cube[5][2][i] = leftLeft[2-i]; 
     }
 
     rotateFace(1);
